@@ -1,4 +1,7 @@
+#ifdef _WIN32
 #include "windows.h"
+#endif
+
 #include "cstddef"
 #include "shared_vector.h"
 class MemoryMap {
