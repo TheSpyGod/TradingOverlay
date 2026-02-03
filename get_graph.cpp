@@ -1,6 +1,7 @@
 #include "sierrachart.h"
 #include "./src/memoryapi.h"
 #include <vector>
+#include "initializer.h"
 
 SCDLLName("MinuteLogger with Dots")
 
@@ -49,5 +50,6 @@ SCSFExport scsf_MinuteLogger(SCStudyInterfaceRef sc) {
     
     MemoryMap m;
     m.map(volumeVector);
-    
+    Initializer i;
+    i.init();
 };

@@ -1,5 +1,6 @@
-#include "./window.h"
+#include "window.h"
 int main() {
-    Window win;
-    win.init();
+    Window w;
+    w.init();
+    return 0;
 }

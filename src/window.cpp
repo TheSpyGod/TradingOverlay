@@ -1,29 +1,68 @@
 #include "window.h"
-void Window::init() {
-    InitWindow(800,800,"Title");
-    int x = 0;
-    int y = 1;
-    while (!WindowShouldClose())
-    {
 
-    //Go through the vector of the points.
-    //Draw points on window.
-    //Connect points.
-    //EndDrawing();
-    //Repeat
+Vector2 Window::getOriginalDragPosition(bool& isFirstDrag) {
+    if (IsMouseButtonDown(MOUSE_LEFT_BUTTON) && isFirstDrag) {
+        isFirstDrag = false;
+        return GetMousePosition();
+    } else return {-1,-1};
+}
+
+Vector2 Window::getDifferencePosition(bool& isFirstDrag) {
+    if (IsMouseButtonUp(MOUSE_LEFT_BUTTON) && !isFirstDrag) {
+        isFirstDrag = true;
+        return GetMousePosition();
+    } else return {-1,-1};
+}
+
+void Window::calculateMovement(int& savedX, int& savedY, bool& isFirstDrag) {
+ 
+    Vector2 originalPosition = {-1,-1};
+    Vector2 differencePosition = {-1,-1};
+    int differenceX = 0;
+    int differenceY = 0;
+
+    originalPosition = getOriginalDragPosition(isFirstDrag);
+    
+    if (originalPosition.x != -1) {
+        savedX = originalPosition.x;
+        savedY = originalPosition.y;
+        printf("Mouse is pressed: %b And the x is: %d \n", IsMouseButtonDown(MOUSE_LEFT_BUTTON), originalPosition);
+    }
+
+    differencePosition = getDifferencePosition(isFirstDrag);
+
+    differenceX = savedX - differencePosition.x;
+    differenceY = -(savedY - differencePosition.y);
+
+    if (differencePosition.x != -1) {
+        d.moveGraph(differenceX, differenceY);
+    }
+
+}
+
+void Window::init() {
+
+    const int screenWidth = 800;
+    const int screenHeight = 500;
+    
+    InitWindow(screenWidth, screenHeight, "some title");
+    bool connectionsDrawn = false;
+
+    g.readData();
+  
+    int savedX = -1;
+    int savedY = -1;
+    bool isFirstDrag = true;
+
+    while (!WindowShouldClose()) {
         BeginDrawing();
+        
         ClearBackground(RAYWHITE);
-        initVector();
-        if (g.graph[y] > 0 && g.graph[y] < 800 && x < 800 && x > 0) {
-            DrawLine(x,x+5,g.graph[y-1],g.graph[y],BLUE);
-            if (y < g.graph.size()) {
-                x+=10;
-                y+=1;
-            }
-        }
-        // If it hits the edge of the window we can do two things
-        // Either assign a button to move the area further, reset window to white and start from zero in variables
-        // Or Somehow using mouse movement move the graph based on that, make the variables accordingly
+
+        d.drawConnections(g.getOriginalGraph());
+        
+        calculateMovement(savedX, savedY, isFirstDrag);
+
         EndDrawing();
     }
 

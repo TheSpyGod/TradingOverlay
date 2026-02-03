@@ -1,10 +1,15 @@
 #include <vector>
-#include "./memoryapi.h"
-class Graph {
-    private:
-        MemoryMap m;
-    public:
-        std::vector<float> graph;
-        void initVector();
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <cstdlib>
 
+class Graph {
+public:
+    std::vector<int> data;
+
+    void readData();
+    void formatData();
+
+    const std::vector<int>& getOriginalGraph() const;
 };

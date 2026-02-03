@@ -1,10 +1,27 @@
 #include "graph.h"
 
-void Graph::initVector() {
-    SharedVector* shared = m.get_map();
+void Graph::readData() {
+
+    std::ifstream File("data.txt");
+
+    if (!File.is_open()) {
+        std::cout << "Failed to open file\n";
+        return;
+    }
+
+    std::string text;
     
-    graph.assign(shared->data, shared->data + shared->size);
+    while (getline(File, text)) {
+        data.push_back(std::stoi(text));
+    }
+
+    File.close();
+}
+
+void Graph::formatData() {
 
 }
 
-
+const std::vector<int>& Graph::getOriginalGraph() const {
+    return data;
+}
