@@ -26,7 +26,6 @@ void Window::calculateMovement(int& savedX, int& savedY, bool& isFirstDrag) {
     if (originalPosition.x != -1) {
         savedX = originalPosition.x;
         savedY = originalPosition.y;
-        printf("Mouse is pressed: %b And the x is: %d \n", IsMouseButtonDown(MOUSE_LEFT_BUTTON), originalPosition);
     }
 
     differencePosition = getDifferencePosition(isFirstDrag);
@@ -46,7 +45,6 @@ void Window::init() {
     const int screenHeight = 500;
     
     InitWindow(screenWidth, screenHeight, "some title");
-    bool connectionsDrawn = false;
 
     g.readData();
   

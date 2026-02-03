@@ -1,23 +1,26 @@
-# Compiler
-CXX      = g++
-CXXFLAGS = -std=c++17 -Wall -Wextra -Iraylib/src
+TARGET = text
+CXX = g++
+CXXFLAGS = -Wall -std=c++17 -I../src
+LDFLAGS = -lraylib -lGL -lm -lpthread -ldl -lrt -lX11
 
-# Library flags (dynamic linking)
-LDFLAGS  = -Lraylib/src -lraylib -Wl,-rpath,'$$ORIGIN/raylib/src' -lm -ldl -lpthread -lX11
+SRCS = $(wildcard ../src/*.cpp)
+OBJS = $(SRCS:.cpp=.o)
 
-# Target executable
-TARGET   = game
+all: $(TARGET) copy_data
 
-# All .cpp files in src/
-SRC      = $(wildcard src/*.cpp)
+$(TARGET): $(OBJS)
+	$(CXX) $(OBJS) -o $(TARGET) $(LDFLAGS)
 
-# Build target
-all: $(TARGET)
+# Nowa reguła kopiująca plik danych
+copy_data:
+	cp ../src/data.txt .
 
-$(TARGET): $(SRC)
-	$(CXX) $(CXXFLAGS) $(SRC) -o $(TARGET) $(LDFLAGS)
+../src/%.o: ../src/%.cpp
+	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-# Clean target
 clean:
-	rm -f $(TARGET)
+	rm -f ../src/*.o $(TARGET) data.txt
+
+run: all
+	./$(TARGET)
 
