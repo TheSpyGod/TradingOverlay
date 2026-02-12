@@ -13,8 +13,12 @@ A graph visualization program built with C++ and the raylib library.
 
 ## Project Structure
 
-- `src/`: source files (.cpp, .h) and data.txt
+- `src/`: source files (.cpp, .h)
 - `build/`: build directory containing the Makefile and binary output
+
+### NEEDED
+
+- `data.txt`: Place a text file with the data you want to visualize in the src folder.
 
 ## Compilation
 
